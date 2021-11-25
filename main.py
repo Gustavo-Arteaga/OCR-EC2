@@ -5,6 +5,10 @@ import cloudmersive_ocr_api_client
 from cloudmersive_ocr_api_client.rest import ApiException
 import os
 
+from package.saveimg import Save_img
+from package.cloudmersive import Cloudmersive
+from package.jsonproccessing import Json_proccessing
+
 
 
 app = Flask(__name__)
@@ -20,132 +24,97 @@ def dateJS():
 
         print("****"*10)
 
-        img_n = req["img-number"]
-        print("img-number:")
-        print(img_n)
+        url_img = req["img_url"]
+        print("img_urlr:")
+        print(url_img)
 
-        
-        print("Welcome to the OCR API By Decimetrix")
+        #save img
+        Save_img.save(url_img)
+        img_name = Save_img.save(url_img)[1]
+        print("****************")
+        # print(img_name)
+        print("Processing OCR....")
+        #------------------------------------------------------------        
 
-        # Configure API key authorization: Apikey
-        configuration_ocr = cloudmersive_ocr_api_client.Configuration()
-        # configuration_ocr.api_key['Apikey'] = 'c824fa8b-f424-4605-963f-a9a2ad806a39'    #Mi clave de acceso
-        configuration_ocr.api_key['Apikey'] = 'bf31c792-15e4-471c-913c-f9b7473e5f6c'    #clave de acceso Gustavo
+        #consume cloudmersive
+        api_key = 'c4e49e4a-7a7e-4a6e-9805-3ef0db25d5f8'    #Paola access key 
+        json_ocr = Cloudmersive.OCR(api_key, img_name)        
         
-        # create an instance of the API class
-        api_instance_ocr = cloudmersive_ocr_api_client.ImageOcrApi(cloudmersive_ocr_api_client.ApiClient(configuration_ocr))
-        
-        #llamado de la API
-        def OCR_cloudmersive(image_file, 
-                  language = 'ENG',
-                  preprocessing = 'Auto'
-                  ):
-            try:
-                # Convert a scanned image into words with location
-                api_response = api_instance_ocr.image_ocr_image_words_with_location(image_file, language=language, preprocessing=preprocessing)
-                return api_response
-            except ApiException as e:
-                print("Exception when calling ImageOcrApi->image_ocr_image_words_with_location: %s\n" % e)
-        
-        #Marcacion de palabras de la placa
-        def boxes_draw(img, dictionary, index):
-          x_ini = dictionary['words'][index]['x_left']
-          y_ini = dictionary['words'][index]['y_top']
-          width = dictionary['words'][index]['width']
-          height = dictionary['words'][index]['height']
-          text = dictionary['words'][index]['word_text']
-          rectangle = cv2.rectangle(img,(x_ini,y_ini),(x_ini+width,y_ini+height),(255,0,0),2)
-          
-          # create same size image of background color
-          bg_color = (255,0,0)
-          bg = np.full((img.shape), bg_color, dtype=np.uint8)
-          
-          # draw text on bg
-          text_color = (255,255,255)
-          cv2.putText(bg, text, (x_ini,y_ini-3), cv2.FONT_HERSHEY_COMPLEX_SMALL, 0.6, text_color, 1)
-          
-          # get bounding box
-          # use channel corresponding to color so that text is white on black background
-          x,y,w,h = cv2.boundingRect(bg[:,:,2])
-          
-          # copy bounding box region from bg to img
-          result = rectangle.copy()
-          result[y-2:y+h+4, x-2:x+w+4] = bg[y-2:y+h+4, x-2:x+w+4]
-          
-          return result
-        
-        #Llamada de las funciones y vizualización del OCR
-        
-        def OCR_nameplate(path):
-        
-          # img = cv2.imread(path)
-          img = path
-        
-          api_response = OCR_cloudmersive(path)
-          result = api_response.to_dict()
-        #   print(result)
-        
-          for i in range (len(result['words'])):
-            img = boxes_draw(img, result, i)
-          cv2.imshow("result", img)
-          path = 'C:/Projects/DECIMETRIX/frontend-ocr-app/API-ocr/plates_sample/processed-plates'
-          cv2.imwrite(os.path.join(path , 'processed_'+str(img_number)+'.png'), img)
-          cv2.imwrite('processed_Photo'+str(img_number)+'.png',img)
-          cv2.waitKey()
 
-          return result
+        #json_proccessing
+        elec_param_motor = Json_proccessing.json_proccessing(json_ocr)[0]
+        gral_param_motor = Json_proccessing.json_proccessing(json_ocr)[1]        
+
+        # print(OCR_result)
+        # print("****************")
+        # print( elec_param_motor)
+        # print("****************")
+        # print( gral_param_motor)        
         
         
-        #Diccionario con los nombres de las imágenes y la ruta de acceso a su localización
-        dic = {'img_1' : 'ATT32_Photo5.jpg',
-               'img_2' : 'ATT35_Photo3.jpg',
-               'img_3' : 'ATT36_Photo4.jpg',
-               'img_4' : 'ATT38_Photo1.jpg',
-               'img_5' : 'ATT40_Photo3.jpg',
-               'img_6' : 'ATT46_Photo9.jpg',
-               'img_7' : 'ATT56_Photo2.jpg',
-               'img_8' : 'ATT59_Photo5.jpg',
-               'img_9' : 'ATT60_Photo1.jpg',
-               'img_10' : 'ATT63_Photo4.jpg',
-               'img_11' : 'ATT66_Photo1.jpg',
-               'img_12' : 'ATT68_Photo3.jpg',
-               'img_13' : 'ATT82_Photo1.jpg',
-               'img_14' : 'ATT89_Photo3.jpg',
-               'img_15' : 'ATT92_Photo2.jpg',
-               'img_16' : 'ATT95_Photo3.jpg',
-               'img_17' : 'ATT105_Photo2.jpg',
-               'img_18' : 'ATT109_Photo4.jpg',
-               'img_19' : 'ATT131_Photo3.jpg',
-               'img_20' : 'ATT137_Photo3.jpg',
-               'img_21' : 'ATT147_Photo3.jpg',
-               'img_22' : 'ATT150_Photo3.jpg',
-               'img_23' : 'ATT155_Photo2.jpg',
-               'img_24' : 'ATT174_Photo2.jpg',
-               }
-        
-        #Change this path to your image folder
-        route_access = "C:/Projects/DECIMETRIX/frontend-ocr-app/API-ocr/plates_sample/"
         
         
-        #Puesta en marcha del programa
         
-        #La variable path es la dirección completa de alojamiento de la imagen
-        img_number = img_n
-        path = route_access + dic['img_'+str(img_number)]
-        
-        #Llamado del programa
-        # response = OCR_nameplate(path)
-        response = OCR_nameplate("https://bucket-power-dragon-test.s3.us-east-2.amazonaws.com/ATT35_Photo3.jpg")
+
+        #enviar a postgreSQL        
+
+        import psycopg2
+        from psycopg2 import pool        
+
+        #enviar a postgreSQL        
+
+        DB_HOST = "ec2-52-4-100-65.compute-1.amazonaws.com"
+        DB_NAME = "denang56diacm9"
+        DB_USER = "uflakclinfsavi"
+        DB_PASS = "7a88a43c58809174e726e5361184467538cc2ea2b46fb503add7a9b1ca6774d8"        
+
+        try:
+            postgreSQL_pool = psycopg2.pool.SimpleConnectionPool(1, 20, user=DB_USER,
+                                                                 password=DB_PASS,
+                                                                 host=DB_HOST,
+                                                                 port="5432",
+                                                                 database=DB_NAME)
+            if (postgreSQL_pool):
+                print("Connection pool created successfully")        
+
+            # Use getconn() to Get Connection from connection pool
+            ps_connection = postgreSQL_pool.getconn()        
+
+            if (ps_connection):
+                print("successfully recived connection from connection pool ")
+                ps_cursor = ps_connection.cursor()
+                
+                #valores a insertar
+                insert_elect_param = "INSERT INTO electric_param_motor (hp,voltage,amperage,powerfactor,efficiency,servicefactor,rpm,hz,phases) VALUES ('" +elec_param_motor["HP"]+"','"+elec_param_motor["Voltage"]+"','"+ elec_param_motor["amperage"]+"','"+ elec_param_motor["powerfactor"] +"','"+ elec_param_motor["efficiency"]+"','"+elec_param_motor["servicefactor"]+"','"+elec_param_motor["rpm"]+"','"+ elec_param_motor["HZ"]+"','"+ elec_param_motor["phases"]+"');"
+                insert_gral_param = "INSERT INTO gral_param_motor (insulationclass,manufacturer,serialnumber,enclousure,modelnumber,CAT,Weight,DATE,temperature,frame,duty) VALUES ('" +gral_param_motor["insulationclass"] +"','"+gral_param_motor["manufacturer"] +"','"+gral_param_motor["serialnumber"] +"','"+gral_param_motor["enclousure"] +"','"+ gral_param_motor["modelnumber"]+"','"+gral_param_motor["CAT"] +"','"+gral_param_motor["Weight"] +"','"+gral_param_motor["DATE"]+"','"+gral_param_motor["temperature"]+"','"+gral_param_motor["frame"]+"','"+gral_param_motor["duty"]+"');"
+                
+                        
+
+                ps_cursor.execute(insert_elect_param)
+                ps_connection.commit()
+                ps_cursor.execute(insert_gral_param)
+                ps_connection.commit()
+                ps_cursor.close()        
+
+                # Use this method to release the connection object and send back to connection pool
+                postgreSQL_pool.putconn(ps_connection)
+                print("Insert value in PostgreSQL connection")        
+
+        except (Exception, psycopg2.DatabaseError) as error:
+            print("Error while connecting to PostgreSQL", error)        
+
+        finally:
+            # closing database connection.
+            # use closeall() method to close all the active connection if you want to turn of the application
+            if postgreSQL_pool:
+                
+                postgreSQL_pool.closeall
+            print("PostgreSQL connection pool is closed")        
 
 
-        # response = {
-        #     "HP_motor": 30,
-        #     "V_motor": 30,
-        #     "F_motor": 30,
-        # }
 
-        print("Image processed successfully")
-        print("****"*10)
+        
+        response = "successfully"
 
 
         res = make_response(jsonify(response), 200)
