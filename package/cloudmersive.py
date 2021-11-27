@@ -74,8 +74,8 @@ class Cloudmersive:
  
         cv2.imwrite('resource/processed/'+img_name,img)
         import boto3
-        AWS_ACCESS_KEY_ID = 'AKIAQAWPGYBKHGHVCHH3'
-        AWS_SECRET_ACCESS_KEY = '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'
+        AWS_ACCESS_KEY_ID = 'AWS_ACCESS_KEY_ID'
+        AWS_SECRET_ACCESS_KEY = 'AWS_ACCESS_KEY_ID'
         
         client_s3 = boto3.client('s3', aws_access_key_id= AWS_ACCESS_KEY_ID , aws_secret_access_key= AWS_SECRET_ACCESS_KEY)
         path = 'resource/unprocessed/'+img_name
@@ -86,21 +86,12 @@ class Cloudmersive:
       #   cv2.waitKey()
         return result, url_img_processed
       
-      
-      #url de la imagen
-      
-      
-      # path = "https://bucket-power-dragon-test.s3.us-east-2.amazonaws.com/ATT35_Photo3.jpg"
-      # path = "ATT82_Photo1.jpg"
-      # path = "ATT46_Photo9.jpg"
+     
       
       # path = 'src/'+img_name
       path = 'resource/unprocessed/'+img_name 
       
-      
-      
-      #Llamado del programa
-      # response = OCR_nameplate(path)
+
       return OCR_nameplate(path)
 
 

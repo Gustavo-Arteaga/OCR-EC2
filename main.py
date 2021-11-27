@@ -38,8 +38,12 @@ def dateJS():
 
         #consume cloudmersive
         api_key = 'c4e49e4a-7a7e-4a6e-9805-3ef0db25d5f8'    #Paola access key 
-        json_ocr = Cloudmersive.OCR(api_key, img_name)[0]        
-        url_img_processed = Cloudmersive.OCR(api_key, img_name)[1]        
+        json_ocr = Cloudmersive.OCR(api_key, img_name)[0]   
+
+        url_img_processed = {
+            'url_img_process': Cloudmersive.OCR(api_key, img_name)[1] 
+        }     
+            
         
 
         #json_proccessing
@@ -53,65 +57,6 @@ def dateJS():
         # print( gral_param_motor)        
         
         
-        
-        
-        
-
-        # #enviar a postgreSQL        
-
-        # import psycopg2
-        # from psycopg2 import pool        
-
-        # #enviar a postgreSQL        
-
-        # DB_HOST = "ec2-52-4-100-65.compute-1.amazonaws.com"
-        # DB_NAME = "denang56diacm9"
-        # DB_USER = "uflakclinfsavi"
-        # DB_PASS = "7a88a43c58809174e726e5361184467538cc2ea2b46fb503add7a9b1ca6774d8"        
-
-        # try:
-        #     postgreSQL_pool = psycopg2.pool.SimpleConnectionPool(1, 20, user=DB_USER,
-        #                                                          password=DB_PASS,
-        #                                                          host=DB_HOST,
-        #                                                          port="5432",
-        #                                                          database=DB_NAME)
-        #     if (postgreSQL_pool):
-        #         print("Connection pool created successfully")        
-
-        #     # Use getconn() to Get Connection from connection pool
-        #     ps_connection = postgreSQL_pool.getconn()        
-
-        #     if (ps_connection):
-        #         print("successfully recived connection from connection pool ")
-        #         ps_cursor = ps_connection.cursor()
-                
-        #         #valores a insertar
-        #         insert_elect_param = "INSERT INTO electric_param_motor (hp,voltage,amperage,powerfactor,efficiency,servicefactor,rpm,hz,phases) VALUES ('" +elec_param_motor["HP"]+"','"+elec_param_motor["Voltage"]+"','"+ elec_param_motor["amperage"]+"','"+ elec_param_motor["powerfactor"] +"','"+ elec_param_motor["efficiency"]+"','"+elec_param_motor["servicefactor"]+"','"+elec_param_motor["rpm"]+"','"+ elec_param_motor["HZ"]+"','"+ elec_param_motor["phases"]+"');"
-        #         insert_gral_param = "INSERT INTO gral_param_motor (insulationclass,manufacturer,serialnumber,enclousure,modelnumber,CAT,Weight,DATE,temperature,frame,duty) VALUES ('" +gral_param_motor["insulationclass"] +"','"+gral_param_motor["manufacturer"] +"','"+gral_param_motor["serialnumber"] +"','"+gral_param_motor["enclousure"] +"','"+ gral_param_motor["modelnumber"]+"','"+gral_param_motor["CAT"] +"','"+gral_param_motor["Weight"] +"','"+gral_param_motor["DATE"]+"','"+gral_param_motor["temperature"]+"','"+gral_param_motor["frame"]+"','"+gral_param_motor["duty"]+"');"
-                
-                        
-
-        #         ps_cursor.execute(insert_elect_param)
-        #         ps_connection.commit()
-        #         ps_cursor.execute(insert_gral_param)
-        #         ps_connection.commit()
-        #         ps_cursor.close()        
-
-        #         # Use this method to release the connection object and send back to connection pool
-        #         postgreSQL_pool.putconn(ps_connection)
-        #         print("Insert value in PostgreSQL connection")        
-
-        # except (Exception, psycopg2.DatabaseError) as error:
-        #     print("Error while connecting to PostgreSQL", error)        
-
-        # finally:
-        #     # closing database connection.
-        #     # use closeall() method to close all the active connection if you want to turn of the application
-        #     if postgreSQL_pool:
-                
-        #         postgreSQL_pool.closeall
-        #     print("PostgreSQL connection pool is closed")        
-
 
 
         
@@ -121,10 +66,6 @@ def dateJS():
         res = make_response(jsonify(response), 200)
         
         return res
-
-
-
-
 
 
     else:
