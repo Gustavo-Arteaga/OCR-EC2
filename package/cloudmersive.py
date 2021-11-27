@@ -69,13 +69,22 @@ class Cloudmersive:
       
         for i in range (len(result['words'])):
           img = boxes_draw(img, result, i)
-      #   cv2.imshow("result", img)
-      #   path = 'C:/Projects/DECIMETRIX/frontend-ocr-app/API-ocr/plates_sample/processed-plates'
-      #   cv2.imwrite(os.path.join(path , 'processed_'+str(img_number)+'.png'), img)
-      #guardar imagen procesada
+
+          #Upload img processed to S3 bucket
+ 
         cv2.imwrite('resource/processed/'+img_name,img)
+        import boto3
+        AWS_ACCESS_KEY_ID = 'AKIAQAWPGYBKHGHVCHH3'
+        AWS_SECRET_ACCESS_KEY = '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'
+        
+        client_s3 = boto3.client('s3', aws_access_key_id= AWS_ACCESS_KEY_ID , aws_secret_access_key= AWS_SECRET_ACCESS_KEY)
+        path = 'resource/unprocessed/'+img_name
+        bucket_name = 'img-processed'
+        region = 'us-east-2'
+        client_s3.upload_file(path, bucket_name,img_name, ExtraArgs={'ACL':'public-read'})
+        url_img_processed = "https://"+bucket_name+".s3."+region+".amazonaws.com/"+img_name
       #   cv2.waitKey()
-        return result
+        return result, url_img_processed
       
       
       #url de la imagen
