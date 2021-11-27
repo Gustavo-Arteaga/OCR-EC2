@@ -74,8 +74,8 @@ def dateJS():
 
 @app.route("/foo")
 def index():
-    return 'python serve'
+    return 'Decimetrix Power Dragon'
 
 if __name__ == '__main__':
 
-  app.run()
+  app.run("0.0.0.0", debug=False)
