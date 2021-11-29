@@ -73,17 +73,21 @@ class Cloudmersive:
           #Upload img processed to S3 bucket
  
         cv2.imwrite('resource/processed/'+img_name,img)
+        print("****************")
+        print("Img processed save in local storage")
+        path_upload = 'resource/processed/'+img_name
         import boto3
         AWS_ACCESS_KEY_ID = 'AWS_ACCESS_KEY_ID'
-        AWS_SECRET_ACCESS_KEY = 'AWS_ACCESS_KEY_ID'
+        AWS_SECRET_ACCESS_KEY = 'AWS_SECRET_ACCESS_KEY'
         
         client_s3 = boto3.client('s3', aws_access_key_id= AWS_ACCESS_KEY_ID , aws_secret_access_key= AWS_SECRET_ACCESS_KEY)
         path = 'resource/unprocessed/'+img_name
         bucket_name = 'img-processed'
         region = 'us-east-2'
-        client_s3.upload_file(path, bucket_name,img_name, ExtraArgs={'ACL':'public-read'})
+        client_s3.upload_file(path_upload, bucket_name,img_name, ExtraArgs={'ACL':'public-read'})
         url_img_processed = "https://"+bucket_name+".s3."+region+".amazonaws.com/"+img_name
       #   cv2.waitKey()
+        print("Uploading s3 bucket....")
         return result, url_img_processed
       
      

@@ -9,10 +9,11 @@ from package.saveimg import Save_img
 from package.cloudmersive import Cloudmersive
 from package.jsonproccessing import Json_proccessing
 
-
+from flask_cors import CORS
 
 app = Flask(__name__)
 
+CORS(app)
 
 
 @app.route("/dateurl",  methods = ['POST'])
@@ -37,7 +38,7 @@ def dateJS():
         #------------------------------------------------------------        
 
         #consume cloudmersive
-        api_key = 'c4e49e4a-7a7e-4a6e-9805-3ef0db25d5f8'    #Paola access key 
+        api_key = '5da85458-39ef-4246-93be-26c75cd817a6'    #Eynher access key 
         json_ocr = Cloudmersive.OCR(api_key, img_name)[0]   
 
         url_img_processed = {
@@ -60,7 +61,7 @@ def dateJS():
 
 
         
-        response = [elec_param_motor , gral_param_motor, url_img_processed]
+        response = [ url_img_processed, elec_param_motor , gral_param_motor]
 
 
         res = make_response(jsonify(response), 200)
@@ -78,4 +79,5 @@ def index():
 
 if __name__ == '__main__':
 
+#   app.run()
   app.run("0.0.0.0", debug=False)
