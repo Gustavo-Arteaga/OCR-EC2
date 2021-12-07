@@ -16,7 +16,7 @@ app = Flask(__name__)
 CORS(app)
 
 
-@app.route("/dateurl",  methods = ['POST'])
+@app.route("/urlunprocessed",  methods = ['POST'])
 
 def dateJS():
     if request.get_json():
@@ -25,8 +25,8 @@ def dateJS():
 
         print("****"*10)
 
-        url_img = req["img_url"]
-        print("img_urlr:")
+        url_img = req["url_img_unprocessed"]
+        print("url_img_unprocessed:")
         print(url_img)
 
         #save img
@@ -38,7 +38,7 @@ def dateJS():
         #------------------------------------------------------------        
 
         #consume cloudmersive
-        api_key = '5da85458-39ef-4246-93be-26c75cd817a6'    #Eynher access key 
+        api_key = 'bf31c792-15e4-471c-913c-f9b7473e5f6c'    #Eynher access key 
         json_ocr = Cloudmersive.OCR(api_key, img_name)[0]   
 
         url_img_processed = {
@@ -79,5 +79,5 @@ def index():
 
 if __name__ == '__main__':
 
-#   app.run()
-  app.run("0.0.0.0", debug=False)
+  app.run()
+#   app.run("0.0.0.0", debug=False)

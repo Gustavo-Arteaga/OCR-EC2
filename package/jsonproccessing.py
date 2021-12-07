@@ -2,29 +2,29 @@ class Json_proccessing:
     def json_proccessing(result):
 
         elec_param_motor = {
-            'HP': 'none',
-            'Voltage': 'none',
-            'amperage': 'none',
-            'powerfactor': 'none',
-            'efficiency': 'none',
-            'servicefactor': 'none',
-            'rpm': 'none',
-            'HZ': 'none',
-            'phases': 'none'
+            'HP': '',
+            'Voltage': '',
+            'amperage': '',
+            'powerfactor': '',
+            'efficiency': '',
+            'servicefactor': '',
+            'rpm': '',
+            'HZ': '',
+            'phases': ''
             }
         
         gral_param_motor = {
-            'insulationclass': 'none',
-            'manufacturer': 'none',
-            'serialnumber': 'none',
-            'enclousure': 'none',
-            'modelnumber': 'none',
-            'CAT': 'none',
-            'Weight': 'none',
-            'DATE': 'none',
-            'temperature': 'none',
-            'frame': 'none',
-            'duty': 'none'
+            'insulationclass': '',
+            'manufacturer': '',
+            'serialnumber': '',
+            'enclousure': '',
+            'modelnumber': '',
+            'CAT': '',
+            'Weight': '',
+            'DATE': '',
+            'temperature': '',
+            'frame': '',
+            'duty': ''
         
         }
 

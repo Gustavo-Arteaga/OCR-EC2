@@ -40,9 +40,9 @@
 #     cb=percent_cb, num_cb=10)
 
 
-import boto3
-AWS_ACCESS_KEY_ID =  'AKIAQAWPGYBKHGHVCHH3'
-AWS_SECRET_ACCESS_KEY = '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'
+# import boto3
+# AWS_ACCESS_KEY_ID =  'AKIAQAWPGYBKHGHVCHH3'
+# AWS_SECRET_ACCESS_KEY = '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'
 
 client_s3 = boto3.client('s3', aws_access_key_id= AWS_ACCESS_KEY_ID , aws_secret_access_key= AWS_SECRET_ACCESS_KEY)
 file_name = 'ATT40_Photo3.jpg'
