@@ -43,8 +43,23 @@ def process_ocr():
         # Execute OCR Image Processig
         image_processing = ImageProcessing(url_img)
         response = image_processing.run_cm()
+        # Generate the Response 
+        res = make_response(jsonify(response), 201)
+        return res
+    except:
+        abort(500)
+
+@app.route("/sendkey",  methods=['POST'])
+def image_key_handler():
+    try:
+        # Recive the URL of the image
+        req = request.get_json()
+        img_key = req["img_key"]
+        # Execute image key processing function
+        image_processing = ImageProcessing(img_key)
+        response = image_processing.img_key_processing()
         # Generate the Response
-        res = make_response(jsonify(response), 200)
+        res = make_response(jsonify(response), 201)
         return res
     except:
         abort(500)

@@ -23,12 +23,26 @@ class ImageProcessing:
         #Save image name
         self.img_name = img_name
         #Find bucket name name in te link
-        for i in range(len(img_link)-1):
-            if img_link[i] == '.':
-                bucket_name = img_link[8:i]
-                break
-        #Save bucket name
-        self.bucket_name = bucket_name
+        if img_link[0:8] == 'https://':
+            for i in range(len(img_link)-1):
+                if img_link[i] == '.':
+                    bucket_name = img_link[8:i]
+                    break
+            #Save bucket name
+            self.bucket_name = bucket_name
+        else: 
+            self.bucket_name = 'bucketpowerdragons3test65409-dev'
+
+    def img_key_processing(self):
+        s3 = boto3.resource('s3', aws_access_key_id=AWS_ACCESS_KEY_ID, aws_secret_access_key=AWS_SECRET_ACCESS_KEY)
+        obj = s3.Object(bucket_name = self.bucket_name, key = self.img_link)
+        obj.Acl().put(ACL='public-read')
+        
+        region = 'us-east-2'
+        #s3.upload_file(path_upload, self.bucket_name, self.img_name, ExtraArgs={'ACL': 'public-read'})
+        url_img_unprocessed = {'url_img_unprocessed':"https://"+self.bucket_name+".s3."+region+".amazonaws.com/"+self.img_link}
+        print("OCR Image Uploaded to S3 Bucket...................................")
+        return url_img_unprocessed
 
     def download_file(self):     
         #Create de Output Path
