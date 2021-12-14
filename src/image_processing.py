@@ -39,7 +39,6 @@ class ImageProcessing:
         obj.Acl().put(ACL='public-read')
         
         region = 'us-east-2'
-        #s3.upload_file(path_upload, self.bucket_name, self.img_name, ExtraArgs={'ACL': 'public-read'})
         url_img_unprocessed = {'url_img_unprocessed':"https://"+self.bucket_name+".s3."+region+".amazonaws.com/"+self.img_link}
         print("OCR Image Uploaded to S3 Bucket...................................")
         return url_img_unprocessed
