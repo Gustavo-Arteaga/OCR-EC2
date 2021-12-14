@@ -57,7 +57,7 @@ class ImageProcessing:
         bucket_name = 'img-processed'
         region = 'us-east-2'
         s3.upload_file(path_upload, bucket_name, self.img_name, ExtraArgs={'ACL': 'public-read'})
-        url_img_processed = {'url_img_process':"https://"+bucket_name+".s3."+region+".amazonaws.com/"+self.img_name}
+        url_img_processed = {'url_img_processed':"https://"+bucket_name+".s3."+region+".amazonaws.com/"+self.img_name}
         print("OCR Image Uploaded to S3 Bucket...................................")
         return url_img_processed
 
@@ -82,7 +82,7 @@ class ImageProcessing:
         #Analysis of the JSON file
         print('Analyzing OCR json File.........................................')
         json_processing = JsonProccessing()
-        gral_param_motor, elec_param_motor = json_processing.run(json_ocr)
+        elec_param_motor, gral_param_motor = json_processing.run(json_ocr)
         #Generate the JSON Response
         print('Generating Response.............................................')
         response = [url_img_processed, elec_param_motor, gral_param_motor]
