@@ -1,0 +1,1 @@
+## This is a temportal folder to storage unprocessed images
