@@ -37,8 +37,8 @@ class JsonProccessing:
             if (word["word_text"] != "|"):
                 words[i]=word["word_text"]
                 i+=1
-        print (words)
-        print(len(words))
+        #print (words)
+        #print(len(words))
         j=0
         hz_count = 0
         insulation_count = 0

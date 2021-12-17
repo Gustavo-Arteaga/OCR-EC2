@@ -14,7 +14,6 @@ class ImageProcessing:
     def __init__(self, img_link):
         #Save image link
         self.img_link = img_link
-        print(img_link)
         #Find the image name in te link 
         for i in range(len(img_link)-1, 0, -1):
             if img_link[i] == '/':
@@ -30,6 +29,8 @@ class ImageProcessing:
                     break
             #Save bucket name
             self.bucket_name = bucket_name
+            #Get the aws_path
+            self.aws_path = img_link[img_link.find('.com')+5:]
         else: 
             self.bucket_name = 'bucketpowerdragons3test65409-dev'
 
@@ -48,7 +49,7 @@ class ImageProcessing:
         image_path = os.path.join('./resource/unprocessed/', self.img_name)
         #Create AWS S3 Client and Download the File
         s3=boto3.client('s3', aws_access_key_id = AWS_ACCESS_KEY_ID , aws_secret_access_key = AWS_SECRET_ACCESS_KEY)
-        s3.download_file(self.bucket_name, self.img_name, image_path)
+        s3.download_file(self.bucket_name, self.aws_path, image_path)
         return image_path
 
     def upload_file(self, path_upload):
