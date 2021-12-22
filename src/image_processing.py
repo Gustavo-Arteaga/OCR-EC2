@@ -32,7 +32,7 @@ class ImageProcessing:
             #Get the aws_path
             self.aws_path = img_link[img_link.find('.com')+5:]
         else: 
-            self.bucket_name = 'bucketpowerdragons3test65409-dev'
+            self.bucket_name = 'bucketpowerdragons3test73308-power'
 
     def img_key_processing(self):
         s3 = boto3.resource('s3', aws_access_key_id=AWS_ACCESS_KEY_ID, aws_secret_access_key=AWS_SECRET_ACCESS_KEY)
@@ -55,10 +55,10 @@ class ImageProcessing:
     def upload_file(self, path_upload):
         # Upload img processed to S3 bucket
         s3 = boto3.client('s3', aws_access_key_id=AWS_ACCESS_KEY_ID, aws_secret_access_key=AWS_SECRET_ACCESS_KEY)
-        bucket_name = 'img-processed'
+        bucket_name = 'powerdragon-img-processed'
         region = 'us-east-2'
         s3.upload_file(path_upload, bucket_name, self.img_name, ExtraArgs={'ACL': 'public-read'})
-        url_img_processed = {'url_img_processed':"https://"+bucket_name+".s3."+region+".amazonaws.com/"+self.img_name}
+        url_img_processed = {'urlImgProcessed':"https://"+bucket_name+".s3."+region+".amazonaws.com/"+self.img_name}
         print("OCR Image Uploaded to S3 Bucket...................................")
         return url_img_processed
 
